@@ -157,29 +157,43 @@ VALUES
 --Proof of concept queries - Inner Join, Group By, Union 
 
 -- Query 1: Campaign Performance by Client
-SELECT c.company_name, camp.name as campaign_name, ch.name as channel, camp.views, camp.clicks, camp.conversions, camp.expenses, camp.total_sales
-    ,ROUND(camp.expenses/camp.clicks, 2) as cost_per_click, ROUND(camp.total_sales/camp.conversions, 2) as revenue_per_conversion
+SELECT 
+  c.company_name
+, camp.name as campaign_name
+, ch.name as channel
+, camp.views
+, camp.clicks
+, camp.conversions
+, camp.expenses
+, camp.total_sales
+, ROUND(camp.expenses/camp.clicks, 2) as cost_per_click
+, ROUND(camp.total_sales/camp.conversions, 2) as revenue_per_conversion
 FROM Campaigns camp
-  INNER JOIN Clients c 
-    ON camp.client_id = c.client_id
-  INNER JOIN Channel ch 
-    ON camp.channel_id = ch.channel_id
-  ORDER BY camp.total_sales DESC;
+  INNER JOIN Clients c ON camp.client_id = c.client_id
+  INNER JOIN Channel ch ON camp.channel_id = ch.channel_id
+ORDER BY camp.total_sales DESC
+;
 
 
 -- Query 2: Audience Segment Performance by Location and Channel
-SELECT a.name as audience_segment, a.age_group, loc.name as target_location, ch.name as channel
-  , COUNT(camp.campaign_id) as num_campaigns
-  , SUM(camp.views) as total_views, SUM(camp.likes) as total_likes, SUM(camp.clicks) as total_clicks, SUM(camp.conversions) as total_conversions, SUM(camp.total_sales) as total_revenue
+SELECT 
+  a.name as audience_segment
+, a.age_group
+, loc.name as target_location
+, ch.name as channel
+, COUNT(camp.campaign_id) as num_campaigns
+, SUM(camp.views) as total_views
+, SUM(camp.likes) as total_likes
+, SUM(camp.clicks) as total_clicks
+, SUM(camp.conversions) as total_conversions
+, SUM(camp.total_sales) as total_revenue
 FROM Campaigns camp
-  INNER JOIN Audiences a 
-    ON camp.audience_id = a.audience_id
-  INNER JOIN Locations loc 
-    ON camp.location_id = loc.location_id
-  INNER JOIN Channel ch 
-    ON camp.channel_id = ch.channel_id
+  INNER JOIN Audiences a ON camp.audience_id = a.audience_id
+  INNER JOIN Locations loc ON camp.location_id = loc.location_id
+  INNER JOIN Channel ch ON camp.channel_id = ch.channel_id
 GROUP BY a.audience_id, a.name, a.age_group, loc.location_id, loc.name, ch.channel_id, ch.name
-ORDER BY total_revenue DESC;
+ORDER BY total_revenue DESC
+;
 
 
 -- Query 3: Identify all channels and types of campaigns
@@ -187,3 +201,4 @@ ORDER BY total_revenue DESC;
 SELECT * FROM Campaign_type
 UNION
 SELECT * FROM Channel
+;
