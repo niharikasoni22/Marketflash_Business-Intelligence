@@ -1,0 +1,189 @@
+--Database schema - creating tables
+
+CREATE TABLE Clients
+  (
+  client_id varchar(10) PRIMARY KEY NOT NULL
+, company_name varchar(15) NOT NULL
+, address varchar(100)
+, email varchar(20) UNIQUE NOT NULL
+, phone varchar(20) NOT NULL
+, contact_person varchar(50) NOT NULL
+  )
+  ;
+
+CREATE TABLE Executives
+  (
+  executive_id varchar(10) PRIMARY KEY NOT NULL
+, name varchar(100) NOT NULL
+, phone varchar(20) NOT NULL 
+, email varchar(20) UNIQUE NOT NULL 
+  )
+  ;
+
+  
+CREATE TABLE Channel
+  (
+  channel_id varchar(10) PRIMARY KEY NOT NULL
+, name varchar(50) NOT NULL
+  )
+  ;
+
+CREATE TABLE Campaign_type
+  (
+  campaign_type_id varchar(10) PRIMARY KEY NOT NULL 
+, name varchar(100) NOT NULL
+  )
+  ;
+
+CREATE TABLE Locations
+  (
+  location_id varchar(10) PRIMARY KEY NOT NULL
+, name varchar(20)
+  )
+  ;
+
+CREATE TABLE Audiences
+  (
+  audience_id varchar(10) PRIMARY KEY NOT NULL 
+, name varchar(10) NOT NULL 
+, age_group varchar(20) NOT NULL 
+  )
+  ;
+
+
+CREATE TABLE Campaigns
+  (
+  campaign_id varchar(10) PRIMARY KEY NOT NULL 
+, name varchar(100) NOT NULL
+, start_date datetime NOT NULL
+, end_date datetime
+, views int
+, likes int
+, clicks int
+, conversions int
+, expenses decimal(10,2)
+, total_sales decimal(10,2)
+, client_id varchar(10) NOT NULL 
+, executive_id varchar(10) NOT NULL
+, channel_id varchar(10) NOT NULL
+, campaign_type_id varchar(10) NOT NULL
+, audience_id varchar(10) NOT NULL
+, location_id varchar(10) NOT NULL
+, FOREIGN KEY(client_id) REFERENCES Clients(client_id)
+, FOREIGN KEY(executive_id) REFERENCES Executives(executive_id)
+, FOREIGN KEY(channel_id) REFERENCES Channel(channel_id) 
+, FOREIGN KEY(campaign_type_id) REFERENCES Campaign_type(campaign_type_id)  
+, FOREIGN KEY(audience_id) REFERENCES Audiences(audience_id)
+, FOREIGN KEY(location_id) REFERENCES Locations(location_id)
+  )
+  ;
+
+--Sample data - Insert values--
+
+INSERT INTO Clients (client_id, company_name, address, email, phone, contact_person)
+VALUES
+  (1,'Lopez PLC','0806 Watson Drive Suite 662, Port Andrea, DE 42578-2286','zmcintyre@bauer.info','3724028579','Barbara Walker')
+, (2,'Weaver, Garner and Ramos','2933 Ortiz Overpass Suite 099, South Douglasburgh, KY 52632-7557','oscott@gmail.com','4989787718501','Melinda Johnston')
+, (3,'Salinas-Chavez','53637 Bonnie Walk Suite 961, South Adrianaport, IA 49560','richard84@hotmail.com','2545622603','Chelsea Hoffman')
+, (4,'Russell, Wilson and Rogers','27907 Deborah Hill Suite 235, Abigailbury, CO 58408','michael78@yahoo.com','9952136315','Michael Howard')
+, (5,'White Ltd','172 Angela Crescent Apt. 306, North Laura, HI 69094-7497','jeremy56@gmail.com','3201853187395','Nathan Weber')
+, (6,'Patterson and Sons','0171 Patricia Street Suite 265, Frankmouth, MS 50700-0717','nataliemartinez@hotmail.com','2281662016','Christopher Riggs')
+, (7,'Weaver-Hoover','050 Andrews Green, North Renee, VT 22014-1131','jacqueline32@dominguez.biz','5741894981166','Kathy Mahoney')
+, (8,'Ross Group','2397 Allison Knolls Suite 213, Jacksonside, WV 58803-3895','kristopher99@romero.org','184424524870945','Lauren Graham')
+, (9,'Noble, Mcneil and Cooper','36911 Gay Streets Suite 795, Brentmouth, LA 62951-4782','sarahparks@yahoo.com','35660863350070','Mark Garcia')
+  ;
+
+INSERT INTO Executives(executive_id, name, phone, email)
+VALUES 
+  (11,'Lauren Riggs','1234567890','kajsdfh@gmail.com')
+, (12,'Brandon Townsend Jr.','2345678901','siuerh@gmail.com')
+, (13,'Thomas Ryan','3456789012','awuilerh@gmail.com')
+, (14,'Jesus Rivera','5678901234','o957@gmail.com')
+, (15,'Brandon Townsend Jr.','7890123456','zoeryh@gmail.com')
+, (16,'Wesley Simon','9012345678','lozseihf@gmail.com')
+  ;
+
+INSERT INTO Channel(channel_id, name)
+VALUES
+  (31,'Email')
+, (32,'Facebook')
+, (33,'Instagram')
+, (34,'Instagram')
+, (35,'Tiktok')
+, (36,'Youtube')
+  ;
+
+INSERT INTO Campaign_type(campaign_type_id, name)
+VALUES 
+  ('S1','Sales')
+, ('S2','Signup')
+  ;
+
+INSERT INTO Locations(location_id, name)
+VALUES
+  (21,'USA')
+, (22,'Canada')
+, (23,'LATAM')
+, (24,'Europe')
+, (25,'Japan')
+, (26,'UK')
+, (27,'AUstralia')
+  ;
+
+INSERT INTO Audiences(audience_id, name, age_group)
+VALUES
+  ('T','Teens','13-19')
+, ('A1','Young Adults','18-40')
+, ('A2','Middle-age Adults','40-60')
+, ('S','Seniors','60+')
+, ('M1','Young Males','18-40')
+, ('M2','Middle-age Males','40-60')
+, ('M3','Senior Males','60+')
+, ('F1','Young Females','18-40')
+, ('F2','Middle-age Females','40-60')
+, ('F3','Senior Females','60+')
+  ;
+
+INSERT INTO Campaigns(campaign_id, name, start_date, end_date, views, likes, clicks, conversions, expenses, total_sales, client_id, executive_id, channel_id, campaign_type_id, audience_id, location_id)
+VALUES
+  ('C001','YouTube Holiday Campaign','2023-12-18','2024-01-10',23458,7718,1056,702,13961.03,0.00,'1','11','35','S2','A1','21')
+, ('C002','Email Sales Drive','2023-10-12','2023-11-09',92422,8075,1360,182,43804.31,50878.17,'2','12','31','S1','S','23')
+, ('C003','TikTok Brand Awareness','2023-05-18','2023-06-04',45934,2446,1655,669,36007.47,76729.41,'3','13','34','S1','M1','22')
+, ('C004','Facebook Community Engagement','2023-03-22','2023-04-19',67821,12345,2104,891,28934.65,102450.25,'4','14','32','S2','A1','21')
+, ('C005','Instagram Influencer Partnership','2023-07-10','2023-08-25',156234,45678,5234,2341,67234.50,189342.75,'5','15','33','S1','A2','24')
+  ;
+
+
+--Proof of concept queries - Inner Join, Group By, Union 
+
+-- Query 1: Campaign Performance by Client
+SELECT c.company_name, camp.name as campaign_name, ch.name as channel, camp.views, camp.clicks, camp.conversions, camp.expenses, camp.total_sales
+    ,ROUND(camp.expenses/camp.clicks, 2) as cost_per_click, ROUND(camp.total_sales/camp.conversions, 2) as revenue_per_conversion
+FROM Campaigns camp
+  INNER JOIN Clients c 
+    ON camp.client_id = c.client_id
+  INNER JOIN Channel ch 
+    ON camp.channel_id = ch.channel_id
+  ORDER BY camp.total_sales DESC;
+
+
+-- Query 2: Audience Segment Performance by Location and Channel
+SELECT a.name as audience_segment, a.age_group, loc.name as target_location, ch.name as channel
+  , COUNT(camp.campaign_id) as num_campaigns
+  , SUM(camp.views) as total_views, SUM(camp.likes) as total_likes, SUM(camp.clicks) as total_clicks, SUM(camp.conversions) as total_conversions, SUM(camp.total_sales) as total_revenue
+FROM Campaigns camp
+  INNER JOIN Audiences a 
+    ON camp.audience_id = a.audience_id
+  INNER JOIN Locations loc 
+    ON camp.location_id = loc.location_id
+  INNER JOIN Channel ch 
+    ON camp.channel_id = ch.channel_id
+GROUP BY a.audience_id, a.name, a.age_group, loc.location_id, loc.name, ch.channel_id, ch.name
+ORDER BY total_revenue DESC;
+
+
+-- Query 3: Identify all channels and types of campaigns
+
+SELECT * FROM Campaign_type
+UNION
+SELECT * FROM Channel
